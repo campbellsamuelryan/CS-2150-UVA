@@ -1,5 +1,7 @@
 # CS 2150 Program and Data Representation
-A repository of all the lab assignments with my solutions for CS 2150: Program and Data Representation course at the University of Virginia 
+A repository of my work building various C++ programs such as data structure implementations (trees, hash tables, linked lists, etc) postfix calculator, some x86 and machine language, huffman encoding + decoding, and a graph DST implementation.
+
+**All Final Implementatins are placed in the Postlab folders for each week**
 
 Lab 1: Introduction to C++  
 Lab 2: Linked Lists  
