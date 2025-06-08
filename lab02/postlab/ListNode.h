@@ -1,4 +1,4 @@
-/* Dion Niazi dn3gy 29 01 2017 ListNode.h
+/*
  * Filename: ListNode.h
  * Description: ListNode class definition
  */
@@ -13,25 +13,21 @@ using namespace std;
 
 class ListNode {
 public:
-    ListNode();                 // Constructor
-    ListNode(int val);          //one parameter constructor
-    ListNode(int val, ListNode *n, ListNode *p);
-    ListNode* getNext();
-    ListNode* getPrevious();
-private:
-    int value;
-    ListNode *next, *previous;	// for doubly linked lists
+    ListNode();         // Constructor
 
-    // List needs to be able to access/change ListNode's next and
-    // previous pointers
+private:
+    int value;          // The value of the node!
+    ListNode* next;     // The next ListNode in the List
+    ListNode* previous; // The previous ListNode in the list
+
+    // List needs access to value, next, and previous
     friend class List;
 
-    // ListItr needs to access/change ListNode as well
+    // ListItr needs access to value
     friend class ListItr;
 
     // Not writing a destructor is fine in this case since there is no
-    // dynamically allocated memory in this class.  No constructor is
-    // necessary, as an object will be set up by the List class.
+    // dynamically allocated memory in this class.
 };
 
 #endif
