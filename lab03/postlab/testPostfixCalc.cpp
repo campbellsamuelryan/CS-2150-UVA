@@ -1,39 +1,60 @@
-// Dion Niazi dn3gy 07 02 2017 testPostFixCalc.cpp
+/*
+Samuel Campbell
+"testPostfixCalc.cpp"
+*/
 #include <iostream>
-#include "postfixCalculator.h"
 #include <string>
-#include <sstream>
 #include <cstdlib>
+#include "postfixCalculator.h"
 using namespace std;
+
 int main() {
-  PostFixCalculator p;
-  while(cin.good()){
-    string str;
-    cin >> str;
-    string num="";
-      if(isdigit(str[0])){
-        p.pushNum(stoi(str));
-      }
-      else if(isdigit(str[0])== false){
-	int i;
-	if(str[0]=='+')
-	  p.add();
-	else if(str[0]=='-')
-	  if((stringstream(str)>>i))
-	    p.pushNum(i);
-	  else
-	    p.sub();
-	else if(str[0]=='*')
-	  p.mult();
-	else if(str[0]=='/')
-	  p.div();
-	else if(str[0]=='~')
-	  p.neg();
+    postfixCalculator p;
+    string token;
+   
+    while (cin >> token ) {
+        // Do stuff with `token`!
+        // For example, we can print each token back out on its own line:
+       // cout << token << endl;
+        if(isdigit(token[0])) {
+            p.addNum(stoi(token));
         }
+
+        //Negative integer check
+        else if(token.size() > 1 && token[0] == '-') {
+            p.addNum(stoi(token));
+        }
+
+        //Addition
+        else if(token == "+") {
+            p.add();
+
+        }
+        //Subtration
+        else if(token == "-") {
+            p.subtract();
+        }
+
+        //Multiplication
+        else if(token == "*") {
+            p.multiply();
+
+        }
+
+        //Division
+        else if(token == "/") {
+            p.divide();
+
+        }
+
+        //Negation
+        else if(token == "~") {
+            p.negate();
+
+        }
+
+
     }
-  if(p.total->empty())
-	exit(-1);
-  cout << "Result is: " << p.getTopValue() << endl;
-  return 0;
-}
- 
+    cout << p.getTopValue() << endl;
+    return 0;
+};

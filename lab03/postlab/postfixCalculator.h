@@ -1,23 +1,28 @@
-// Dion Niazi dn3gy 06 02 2017 postfixCalculator.h
+//
+// Created by Samuel Campbell on 2/5/22.
+//
 
 #ifndef POSTFIXCALCULATOR_H
 #define POSTFIXCALCULATOR_H
-
+#include <stack>
+#include <string>
 #include <iostream>
-#include "stack.h"
-#include <cstdlib>
+
+
 using namespace std;
-class Stack; 
-class PostFixCalculator{
- public:
-  PostFixCalculator();
-  Stack *total;
-  void add();
-  void sub();
-  void div();
-  void mult();
-  void neg();
-  void pushNum(int num);
-  int getTopValue();
+
+class postfixCalculator {
+public:
+    postfixCalculator();
+    ~postfixCalculator();
+
+    bool isOperator(const string& input);
+    void performOp(const string& input, stack<int>& calcStack);
+
+    void add();
+    void subtract();
+
+private:
+
 };
 #endif
