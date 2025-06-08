@@ -1,30 +1,21 @@
-// Dion Niazi dn3gy 29 01 2017 ListNode.cpp
-#include "ListNode.h"
+/*
+FILENAME: "ListNode.cpp"
+
+Author: Samuel Campbell
+Date: 09/07/2022
+
+Lab 2 Pre-Lab
+
+*/
 #include <iostream>
+#include "ListNode.h"
+
 using namespace std;
-ListNode::ListNode()
-{
-  value = 0;
-  next = NULL;
-  previous = NULL;
+
+ListNode::ListNode() {
+    value = 0;
+    next = NULL;
+    previous = NULL;
 }
-ListNode::ListNode(int val)
-{
-  value = val;
-  next = NULL;
-  previous = NULL;
-}
-ListNode::ListNode(int val, ListNode *n, ListNode *p)
-{
-  value = val;
-  next = n;
-  previous = p;
-}
-ListNode* ListNode::getNext()
-{
-	return next;
-}
-ListNode* ListNode::getPrevious()
-{
-	return previous;
-}
+
+

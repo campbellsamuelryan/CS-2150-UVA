@@ -1,50 +1,65 @@
-// Dion Niazi dn3gy 29 01 2017 ListItr.cpp
-#include "ListNode.h"
-#include "List.h"
+/*
+FILENAME: "ListItr.cpp"
+
+Author: Samuel Campbell
+
+
+Lab 2 Post-Lab
+
+*/
+
 #include "ListItr.h"
-#include <iostream>
+
 using namespace std;
 
-//Default Constructor
-ListItr::ListItr()
-{
-  current = NULL;
+ListItr::ListItr() {
+    current = NULL; //new ListNode();
 }
-//one parameter constructor
-ListItr::ListItr(ListNode *theNode)
-{
-  current = theNode;
+
+ListItr::ListItr(ListNode* theNode) {
+    current = theNode;
 }
-/*Returns true if the iterator is currently pointing past the end position in
- the list (i.e., it's pointing to the dummy tail)*/
-bool ListItr::isPastEnd() const
-{
-  if(current->next==NULL){return true;}
-  return false;
+
+// Returns true if the iterator is currently pointing past the end position
+// in the list (i.e., it's pointing to the dummy tail), else false
+bool ListItr::isPastEnd() const {
+    if (current->next == NULL) {
+        return true;
+    } else {
+        return false;
+    }
 }
-/*Returns true if the iterator is currently pointing past(before) the first
- position in list (i.e., it's pointing to the dummy head)*/
-bool ListItr::isPastBeginning() const
-{
-  if(current->previous==NULL){ return true;}
-  return false;
+
+// Returns true if the iterator is currently pointing past (before) the first position
+// in list (i.e., it's pointing to the dummy head), else false
+bool ListItr::isPastBeginning() const {
+    if (current->previous == NULL) {
+        return true;
+    } else {
+        return false;
+    }
 }
-/*Advances the current pointer to the next position in the list
-  (unless already past the end of the list)*/
-void ListItr::moveForward()
-{
-  if(isPastEnd()){return;}
-  current = current->next;
+// Advances `current` to the next position in the list (unless already past the end of the list)
+void ListItr::moveForward() {
+    if (current->next != NULL) {
+        current=current->next;
+    }
 }
-/*Move current back to the previous position in the list
- (unless already past the beginning of the list)*/
-void ListItr::moveBackward()
-{
-  if(isPastBeginning()){return;}
-  current = current->previous;
+
+// Moves `current` back to the previous position in the list (unless already past the beginning of the list)
+void ListItr::moveBackward() {
+    if (current->previous != NULL) {
+        current=current->previous;
+    }
 }
-/*Returns the value of the item in the current position of the list*/
-int ListItr::retrieve() const
-{
-  return current->value;
+
+int ListItr::retrieve() const {
+    if (current == NULL) {
+        return 1;
+    }
+    if (current != NULL) {
+        return current->value;   // Accessing val from theNode
+    }
+    return 1;
 }
+

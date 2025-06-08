@@ -1,171 +1,227 @@
-// Dion Niazi dn3gy 29 01 2017 List.cpp
-#include "List.h"
-#include "ListItr.h"
-#include "ListNode.h"
+/*
+FILENAME: "List.cpp"
+
+Author: Samuel Campbell
+Date: 09/07/2022
+
+Lab 2 Post-Lab
+
+*/
 #include <iostream>
+#include "List.h"
+#include "ListNode.h"
+#include "ListItr.h"
+
 using namespace std;
-//Default Constructor
+
 List::List()
 {
-  head = new ListNode();
-  tail = new ListNode();
-  head->next = tail;
-  tail->previous = head;
-  count = 0;
-}
-//Destructor
-List::~List()
-{
-  makeEmpty();
-  delete head;
-  delete tail;
-  
-}
-List::List(const List& source) {      // Copy Constructor
-  head=new ListNode;
-  tail=new ListNode;
-  head->next=tail;
-  tail->previous=head;
-  count=0;
-  ListItr iter(source.head->next);
-  while (!iter.isPastEnd()) {       // deep copy of the list
-    insertAtTail(iter.retrieve());
-    iter.moveForward();
-  }
+    head = new ListNode();
+    tail = new ListNode();
+
+    head->next = tail;
+    // head->previous=NULL;
+    tail->previous = head;
+    // tail->next=NULL;
+
+    count = 0;
 }
 
-List& List::operator=(const List& source) { //Equals operator
-  if (this == &source)
-    return *this;
-  else {
-    makeEmpty();
+List::List(const List &source)
+{ // Copy Constructor
+    head = new ListNode();
+    tail = new ListNode();
+
+    head->next = tail;
+    tail->previous = head;
+    count = 0;
+
     ListItr iter(source.head->next);
-    while (!iter.isPastEnd()) {
-      insertAtTail(iter.retrieve());
-      iter.moveForward();
+
+    while (!iter.isPastEnd())
+    { // deep copy of the list
+        insertAtTail(iter.retrieve());
+        iter.moveForward();
     }
-  }
-  return *this;
 }
-//returns true if the list is empty, else false
+
+List::~List()
+{
+    makeEmpty();
+    delete head;
+    delete tail;
+}
+
+List &List::operator=(const List &source)
+{ // Equals operator
+    if (this == &source)
+    {
+        return *this;
+    }
+    else
+    {
+        makeEmpty();
+        ListItr iter(source.head->next);
+        while (!iter.isPastEnd())
+        {
+            insertAtTail(iter.retrieve());
+            iter.moveForward();
+        }
+    }
+    return *this;
+}
+/*
+ makeEmpty should clear the list of all elements (isEmpty should return true after calling makeEmpty). It should also make sure that head and tail no longer point to those deleted elements (what should they point to instead in an empty list?).
+ Since we have been dynamically allocating ListNodes, we must also be responsible for deleting them to ensure we do not leak memory. There are multiple ways to iterate through the list and delete each ListNode – experiment and see what makes the most sense to you.
+ Important: once you delete a ListNode, you can no longer reliably access any of its data, such as its next or previous pointers! To make sure you don’t do this accidentally, we recommend setting each ListNode to NULL as soon as you delete it.
+
+ The destructor should delete all dynamically-allocated memory, as we no longer need this List instance. Thus, it makes sense that we should delete all the elements we inserted (hint: do we already have a method for that?). However, what else do we dynamically allocate that we need to delete?
+ */
 bool List::isEmpty() const
 {
-  if(count==0){return true;}
-  return false;
-}
-//removes all nodes except the dummy nodes
-void List::makeEmpty()
-{
-  ListItr position = first();
-  ListNode *n = new ListNode();
- while(!position.isPastEnd())
-    {
-      n = position.current;
-      position.moveForward();
-      delete n;      
+    if (head->next == tail && tail->previous == head)
+    { // changed >> if (count == 0) {
+        return true;
     }
-  count = 0;
-  head->next = tail;
-  tail->previous = head;
+    else
+    {
+        return false;
+    }
 }
-//Returns an iterator that points to the ListNode in the 
-//first position
+
+void List::makeEmpty() {
+
+    ListItr li;
+
+    li.current = head->next;
+
+    while (li.current != tail) 
+    {
+
+        li.moveForward();
+        
+        delete (li.current)->previous;
+       
+    }
+    head->next = tail;
+    tail->previous = head;
+
+}
+
+
+
 ListItr List::first()
 {
-  return ListItr(head->next);
+    ListItr lp(head->next);
+    return lp;
 }
-//Returns an iterator that points to the ListNode in the last position
+
 ListItr List::last()
 {
-  return ListItr(tail->previous);
+    ListItr lp(tail->previous);
+    return lp;
 }
-//inserts x after current iterator position p
+
 void List::insertAfter(int x, ListItr position)
 {
-  ListNode *n = new ListNode(x);
-  position.current->next->previous = n;
-  n->next = position.current->next;
-  position.current->next = n;
-  n->previous = position.current;
-  count++;
+    ListNode *newNode = new ListNode();
+    ListNode *curr = position.current;
+    curr->next->previous = newNode;
+    newNode->next = curr->previous;
+    curr->next = newNode;
+    newNode->previous = curr;
+    count++;
 }
-//inserts x before current iterator position p                                          
+// Inserts x before current iterator position
 void List::insertBefore(int x, ListItr position)
 {
-  ListNode *n = new ListNode(x);
-  position.current->previous->next = n;
-  n->previous = position.current->previous;
-  position.current->previous = n;
-  n->next = position.current;
-  count++;
+    ListNode *newNode = new ListNode();
+    ListNode *curr = position.current;
+    curr->previous->next = newNode;
+    newNode->previous = curr->previous;
+    curr->previous = newNode;
+    newNode->next = curr;
+    count++;
 }
-//insert x at tail of list
+
 void List::insertAtTail(int x)
 {
-  ListNode *n = new ListNode(x);
-  n->next = tail;
-  n->previous = tail->previous;
-  tail->previous->next = n;
-  tail->previous = n;
-  count++;
+    ListNode *newNode = new ListNode();
+
+    newNode->value = x;
+    //tail->previous->next = newNode;
+    newNode->previous = tail->previous;
+    tail->previous->next = newNode;
+    newNode->next = tail;
+    
+    tail->previous = newNode;
+
+    count++;
 }
-//removes first occurence of x
-void List::remove(int x)
-{
-  ListItr iter = find(x);
-  if(iter.current==tail)
-    {
-      cout << "Number is not in the list"<<endl;
-      return;
-    }
-  iter.current->previous->next = iter.current->next;
-  iter.current->next->previous = iter.current->previous;
-  delete iter.current;
-  count--;
-}
-//Returns an iterator that points to the first occurrence of x,
-//else return a iterator to the dummy tail node
+
 ListItr List::find(int x)
 {
-  ListItr iter(head->next);
-  while(iter.isPastEnd()==false && iter.retrieve()!=x){
-    iter.moveForward();
-  }
-  if(iter.current==NULL)
-    iter.current = tail;
-  return iter;
+    ListItr li(head->next);
+    while (li.isPastEnd() == false)
+    {
+        if (li.current->value == x)
+        {
+            return li;
+        }
+        else
+        {
+            li.moveForward();
+        }
+    }
+
+    return li;
 }
-//returns numbers of elements in the list
+
+// Removes the first occurrence of x
+void List::remove(int x)
+{
+    ListItr li;
+    li = find(x);
+
+    li.current->next->previous = li.current->previous;
+    // delete li.current;
+    li.current->previous->next = li.current->next;
+
+    count--;
+}
+
 int List::size() const
 {
-  return count;
-}
-//prints list forward when direction is true
-//or backwards when direction is false
-void printList(List& source, bool direction)
-{
-  if(direction){
-    ListItr iter(source.getHead()->getNext());
-    while(iter.retrieve())
+    ListItr li;
+    li.current = head;
+    int size = 0;
+    while (li.current != tail)
     {
-      cout << iter.retrieve() <<endl;
-      iter.moveForward();
+        size = size + 1;
+        li.current = li.current->next;
     }
-  }
-  else{
-    ListItr iter(source.getTail()->getPrevious());
-    while(iter.retrieve())
-      {
-	cout << iter.retrieve() << endl;
-	iter.moveBackward();
-      }
-  }
+    return size - 1;
 }
-ListNode* List::getHead()
+
+
+void printList(List &source, bool forward)
 {
-  return head;
-}
-ListNode* List::getTail()
-{
-  return tail;
+    ListItr li;
+    if (forward == true)
+    {
+        li = source.first();
+        while (li.isPastEnd() == false)
+        {
+            cout << li.retrieve() << " ";
+            li.moveForward();
+        }
+    }else{
+        li = source.last();
+        while(li.isPastBeginning()==false){
+            cout << li.retrieve() << " ";
+            li.moveBackward();
+        }
+        cout<<endl;
+
+    }
 }
