@@ -1,50 +1,44 @@
-// Dion Niazi dn3gy 07 03 2017 hashTable.cpp
+/*
+ Samuel Campbell
+ 'wordPuzzle.cpp'
+ */
 #include "hashTable.h"
-#include <iostream>
-#include <string>
-#include <vector>
-#include <list>
+
 using namespace std;
-HashTable::HashTable(int s)
-{
-  tableSize = s;
-  list<string> list;
-  for(int i=0; i<tableSize;i++)
-    table.push_back(list);
-}
-int hashWord(string word);
-void HashTable::insert(string word)
-{
-  if(word.length() >= 3){
-    int index = hashWord(word);
-    table[index].push_back(word);
+
+hashTable::hashTable(int size){
+    max_len = 0;
+  table = vector<list<string> > (size);
+};
+
+unsigned int hashTable::strHash(string s){
+
+  int hashVal = 0;
+  for(int i = 0; i < s.length(); i++){
+    hashVal += s.at(i);
   }
+  return hashVal % 42069;
 }
-bool HashTable::checkWord(string word)
-{
-  int index = hashWord(word);
-  if(table[index].front() == word)
-    return true;
-  else{
-    list<string>::iterator i = table[index].begin();
-    while(*i!=word && i!=table[index].end()){
-      ++i;
-    }
-    if(*i == word){
-      return true;}
-    else
-      return false;
+
+bool hashTable::contains(string s){
+  int index = strHash(s);
+
+  for(string comp: table[index]){
+    if(comp == s)
+      return true;
   }
+  return false;
 }
-int HashTable::hashWord(string word)
-{
-  unsigned long long hash = 0;
-  int index = 0;
-  unsigned long long pow = 1;
-  for(int i = 0;i<word.length();i++){
-    hash += ((int)word[0])*pow;
-    pow*=7;
-    }
-  index = hash % tableSize;
-  return index;
+
+void hashTable::insert(string s){
+  int tableLoc = strHash(s);
+  int len_ = s.length();
+  if(len_ > max_len){
+        max_len = len_;
+  }
+  if(len_ > 22){
+        max_len = 22;
+  }
+  table[tableLoc].push_back(s);
 }
+

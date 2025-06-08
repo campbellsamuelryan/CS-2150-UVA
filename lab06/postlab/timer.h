@@ -1,7 +1,3 @@
-// Dion Niazi dn3gy 11 03 2017 timer.h
-// NOTE: in order to compile this system on Linux (and most Unix
-// systems) you will have to include the -lrt flag to your compiler.
-//
 // This timer typically has 1/1000000 second (1 micro-second) accuracy
 // under most Linux distributions
 
@@ -10,27 +6,26 @@
 
 #include <iostream>
 #include <string>
-#include <time.h>
-#include <sys/time.h>
+#include <chrono>
 
 using namespace std;
+using namespace std::chrono;
 
 class timer {
+public:
+    timer();
+    timer(timer& myTimer);
+    void start();
+    void stop();
+
+    // Returns the time elapsed, in seconds
+    double getTime();
 private:
-    timeval startVar, stopVar;
+    steady_clock::time_point start_time, stop_time;
     bool running;
 
-public:
-    timer() : running(0) {}
-    ~timer() {}
-    timer(timer & myTimer);
-    int start();
-    int stop();
-    string toString();
-    ostream & print(ostream &theStream);
-    double getTime();
 };
 
-ostream & operator<<(ostream & theStream, timer & theTimer);
+ostream& operator<<(ostream& theStream, timer& theTimer);
 
 #endif

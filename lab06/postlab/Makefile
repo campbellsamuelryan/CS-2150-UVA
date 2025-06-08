@@ -1,9 +1,16 @@
-# Dion Niazi dn3gy 08 03 2017 Makefile
-CXX=clang++
-CXXFLAGS=-Wall -O2
-OFILES = hashTable.o timer.o wordPuzzle.o
-.SUFFIXES: .o .cpp
-words: $(OFILES)
-	 $(CXX) $(CXXFLAGS) $(OFILES)
+# Samuel Campbell, CS2150
+CXX=clang++ $(CXXFLAGS)
+CXXFLAGS= -Wall -o2
+DEBUG=-g
+
+OBJECTS = wordPuzzle.o timer.o hashTable.o
+
+hash: $(OBJECTS)
+	$(CXX) $(DEBUG) $(OBJECTS) -o a.out
+
+.PHONY: clean
 clean:
-	-rm -f *.o *~ outputfile
+	-rm -f *.o *~ a.out
+
+timer.o: timer.cpp timer.h
+wordPuzzle.o: wordPuzzle.cpp timer.h hashTable.h
