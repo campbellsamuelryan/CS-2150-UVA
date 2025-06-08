@@ -1,40 +1,50 @@
-// Dion Niazi dn3gy 24 01 2017 LifeCycle.cpp
+// Define the member functions we declared above
+// Remember: member functions are defined as Class::method()
 #include <iostream>
-#include <string>
 #include "LifeCycle.h"
+#include <string>
 using namespace std;
 
-// ------------------------------------------------  default constructor
-MyObject::MyObject(const char *n) : name(n) {
+// Constructors and destructors - no return types
+MyObject::MyObject() {
+    // Important: notice how we don't define 'name' or 'id' here
+    // Instead, we're setting the variables that we declared in MyObject
+    name = "--default--";
     id = ++numObjs;
-    cout << "MyObject Default constructor: " << *this << endl;
+    cout << "MyObject Default constructor:   " << *this << endl;
 }
 
-// ---------------------------------------------------  copy constructor
-MyObject::MyObject(const MyObject& rhs) : name(rhs.name) {
+MyObject::MyObject(string n) {
+    name = n;
     id = ++numObjs;
-    cout << "MyObject Copy constructor:    " << *this << endl;
+    cout << "MyObject Parameter constructor: " << *this << endl;
 }
 
-// --------------------------------------------------------  destructor
+MyObject::MyObject(const MyObject& rhs) {
+    name = rhs.name;
+    id = ++numObjs;
+    cout << "MyObject Copy constructor:      " << *this << endl;
+}
+
 MyObject::~MyObject() {
-    cout << "MyObject Destructor:          " << *this << endl;
+    cout << "MyObject Destructor:            " << *this << endl;
 }
 
-string MyObject::getName() const{
-  return name;
+// Regular methods, with return types
+string MyObject::getName() const {
+    return name;
 }
 
-void MyObject::setName(const string newName){
-  name = newName;
+void MyObject::setName(const string& newName) {
+    name = newName;
 }
-// ----------------------------------------------------------  print out
+
+// Let cout know how to print MyObjects
 ostream& operator<<(ostream& output, const MyObject& obj) {
-    // output in format:  ("object name",id)
-    return output << "(\"" << obj.name << "\"," << obj.id << ")";
+    // output in format: ("object name", id)
+    return output << "(\"" << obj.name << "\", " << obj.id << ")";
 }
 
-//---------------------------------------------------- static variables
-int MyObject::numObjs = 0;  // static member for all objects in class
-static MyObject staticObj("I'm static, outside of main");
+
+
 
